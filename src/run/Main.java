@@ -12,8 +12,8 @@ import data.LengthTypePair;
  */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		FileInputStream in = new FileInputStream("tick");
-		PrintWriter out = new PrintWriter(new File("tick.csv"));
+		FileInputStream in = new FileInputStream(Parameter.getInputPath());
+		PrintWriter out = new PrintWriter(new File(Parameter.getOutputPath()));
 
 		out.println(getTitle());
 		String entry;
