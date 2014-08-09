@@ -10,11 +10,10 @@ import java.util.List;
  * Created by Dawnwords on 2014/8/8.
  */
 public class MapHolder {
-    public static final int CONTRACT_LENGTH = 10;
-    public static final int ENTRY_LEN = 2 + 2 + 8192;
+    private static final int CONTRACT_LENGTH = 21;
     private static List<LengthTypePair> map = new LinkedList<LengthTypePair>();
 
-    private MapHolder() {
+    static {
         map.add(new LengthTypePair(2, DataType.SHORT));
         map.add(new LengthTypePair(2, DataType.SHORT));
         map.add(new LengthTypePair(2, DataType.STRING));
@@ -62,7 +61,15 @@ public class MapHolder {
         map.add(new LengthTypePair(21, DataType.STRING));
     }
 
-    public static List<LengthTypePair> getMap() {
+    public static int getEntryLength() {
+    	int result = 0;
+    	for(LengthTypePair pair : map){
+    		result += pair.length;
+    	}
+		return result;
+	}
+
+	public static List<LengthTypePair> getMap() {
         return map;
     }
 
