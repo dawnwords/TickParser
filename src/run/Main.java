@@ -1,7 +1,9 @@
 package run;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import data.LengthTypePair;
 
@@ -11,24 +13,40 @@ import data.LengthTypePair;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		FileInputStream in = new FileInputStream("tick");
-		readEntry(in);
-		readEntry(in);
-		readEntry(in);
+		PrintWriter out = new PrintWriter(new File("tick.csv"));
+
+		out.println(getTitle());
+		String entry;
+		while ((entry = readEntry(in)) != null) {
+			out.println(entry);
+		}
 		in.close();
+		out.close();
 	}
 
-	private static void readEntry(FileInputStream in) throws IOException {
-		byte[] entry = new byte[MapHolder.getEntryLength()];
-		in.read(entry);
-
-		int i = 0;
-		for (LengthTypePair pair : MapHolder.getMap()) {
-			byte[] b = new byte[pair.length];
-			for (int j = 0; j < pair.length; j++, i++) {
-				b[j] = entry[i];
-			}
-			System.out.print(pair.type.getParser().parse(b) + "\t");
+	private static String getTitle() {
+		String result = "";
+		for (String title : Parameter.getTitle()) {
+			result += title + ",";
 		}
-		System.out.println();
+		return result;
+	}
+
+	private static String readEntry(FileInputStream in) throws IOException {
+		byte[] entry = new byte[Parameter.getEntryLength()];
+
+		if (in.read(entry) > 0) {
+			String result = "";
+			int i = 0;
+			for (LengthTypePair pair : Parameter.getMap()) {
+				byte[] b = new byte[pair.length];
+				for (int j = 0; j < pair.length; j++, i++) {
+					b[j] = entry[i];
+				}
+				result += pair.type.getParser().parse(b) + ",";
+			}
+			return result;
+		}
+		return null;
 	}
 }

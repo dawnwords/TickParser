@@ -26,7 +26,6 @@ double		done_amt;
 int			hands;
 char		timestamp[13];
 char		date[9];
-//--------------------------------------
 double		buy_price2;
 int			buy_qty2;
 double		buy_price3;
